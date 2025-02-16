@@ -1,0 +1,5 @@
+{
+  "@@locale": "es",
+  "appTitle": "Ejemplo de Localización en Flutter",
+  "greeting": "¡Hola, Mundo!"
+}

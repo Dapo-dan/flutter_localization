@@ -1,0 +1,5 @@
+{
+  "@@locale": "en",
+  "appTitle": "Flutter Localization Example",
+  "greeting": "Hello, World!"
+}
