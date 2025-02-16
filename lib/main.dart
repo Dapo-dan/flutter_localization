@@ -6,41 +6,78 @@ void main() {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  Locale _locale = const Locale('en', '');
+
+  void _changeLanguage(Locale locale) {
+    setState(() {
+      _locale = locale;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Localization Example',
+      supportedLocales: AppLocalizations.supportedLocales,
       localizationsDelegates: const [
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      supportedLocales: const [
-        Locale('en', ''), // English
-        Locale('es', ''), // Spanish
-      ],
-      locale: const Locale('es', ''), // Default language
-      home: const MyHomePage(),
+      locale: _locale,
+      home: HomePage(onLanguageChange: _changeLanguage),
     );
   }
 }
 
-class MyHomePage extends StatelessWidget {
-  const MyHomePage({super.key});
+class HomePage extends StatelessWidget {
+  final Function(Locale) onLanguageChange;
+
+  const HomePage({super.key, required this.onLanguageChange});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.appTitle),
-      ),
-      body: Center(
-        child: Text(AppLocalizations.of(context)!.greeting),
+      appBar: AppBar(title: Text(AppLocalizations.of(context)!.appTitle)),
+      body: Container(
+        width: double.infinity,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(AppLocalizations.of(context)!.greeting),
+            const SizedBox(
+              height: 50,
+            ),
+            ElevatedButton(
+              onPressed: () => onLanguageChange(const Locale('es', '')),
+              child: Text('Switch to Spanish'),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            ElevatedButton(
+              onPressed: () => onLanguageChange(const Locale('en', '')),
+              child: Text('Switch to English'),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            ElevatedButton(
+              onPressed: () => onLanguageChange(const Locale('fr', '')),
+              child: Text('Switch to French'),
+            ),
+          ],
+        ),
       ),
     );
   }
